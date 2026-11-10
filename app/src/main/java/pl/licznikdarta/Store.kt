@@ -347,6 +347,9 @@ object Store {
         val lineupF = file(ctx, "last_lineup.json")
         if (lineupF.exists()) backup.put("last_lineup", JSONArray(lineupF.readText().ifEmpty { "[]" }))
 
+        val customAudioF = file(ctx, "custom_sounds.json")
+        if (customAudioF.exists()) backup.put("custom_sounds", JSONObject(customAudioF.readText().ifEmpty { "{}" }))
+
         return backup.toString(2)
     }
 
@@ -367,6 +370,9 @@ object Store {
             }
             if (backup.has("last_lineup")) {
                 file(ctx, "last_lineup.json").writeText(backup.getJSONArray("last_lineup").toString())
+            }
+            if (backup.has("custom_sounds")) {
+                file(ctx, "custom_sounds.json").writeText(backup.getJSONObject("custom_sounds").toString())
             }
             true
         } catch (e: Exception) {

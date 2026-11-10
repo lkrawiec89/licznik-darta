@@ -446,10 +446,18 @@ class GameAudio(context: Context? = null) {
     }
 
     fun playLaugh() {
+        val ctx = appContext
+        if (ctx != null && CustomAudioManager.playSoundForScore(ctx, 0)) {
+            return
+        }
         playRawVoice(soundLaughId, R.raw.laugh)
     }
 
     fun playAnnounceIfSpecial(score: Int): Boolean {
+        val ctx = appContext
+        if (ctx != null && CustomAudioManager.playSoundForScore(ctx, score)) {
+            return true
+        }
         return when (score) {
             180 -> { play180(); true }
             140 -> { play140(); true }

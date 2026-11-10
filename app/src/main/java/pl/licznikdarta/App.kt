@@ -22,6 +22,7 @@ sealed class Screen {
     data class Finish(val data: FinishData, val engine: Any) : Screen()
     data class StatAfter(val data: FinishData, val engine: Any) : Screen()
     object Checkout : Screen()
+    object CustomAudio : Screen()
 }
 
 fun extractProgress(engine: Any): List<PlayerProgress> = when (engine) {
@@ -260,6 +261,9 @@ fun App(ctx: Context) {
             is Screen.Checkout -> {
                 currentScreen = Screen.Main(MainTab.SETTINGS)
             }
+            is Screen.CustomAudio -> {
+                currentScreen = Screen.Main(MainTab.SETTINGS)
+            }
             is Screen.StatAfter -> {
                 currentScreen = Screen.Finish(s.data, s.engine)
             }
@@ -321,7 +325,8 @@ fun App(ctx: Context) {
                                     state = state,
                                     tts = tts,
                                     audio = audio,
-                                    onOpenCheckouts = { currentScreen = Screen.Checkout }
+                                    onOpenCheckouts = { currentScreen = Screen.Checkout },
+                                    onOpenCustomAudio = { currentScreen = Screen.CustomAudio }
                                 )
                             }
                         }
@@ -365,6 +370,9 @@ fun App(ctx: Context) {
                             }
                         )
                         is Screen.Checkout -> CheckoutScreen(
+                            onBack = { currentScreen = Screen.Main(MainTab.SETTINGS) }
+                        )
+                        is Screen.CustomAudio -> CustomAudioScreen(
                             onBack = { currentScreen = Screen.Main(MainTab.SETTINGS) }
                         )
                         is Screen.Finish -> FinishScreen(

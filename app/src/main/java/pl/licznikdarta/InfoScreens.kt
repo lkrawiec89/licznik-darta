@@ -30,6 +30,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -793,7 +795,13 @@ fun HistoryScreen(
 }
 
 @Composable
-fun SettingsScreen(state: AppState, tts: GameTts, audio: GameAudio? = null, onOpenCheckouts: () -> Unit) {
+fun SettingsScreen(
+    state: AppState,
+    tts: GameTts,
+    audio: GameAudio? = null,
+    onOpenCheckouts: () -> Unit,
+    onOpenCustomAudio: () -> Unit = {}
+) {
     val context = LocalContext.current
     var showImportConfirmDialog by remember { mutableStateOf(false) }
     var pendingImportJson by remember { mutableStateOf<String?>(null) }
@@ -1073,6 +1081,44 @@ fun SettingsScreen(state: AppState, tts: GameTts, audio: GameAudio? = null, onOp
                                 color = Color.White,
                                 modifier = Modifier.weight(1f)
                             )
+                            Text("›", fontSize = 20.sp, color = DartGreen)
+                        }
+                    }
+
+                    Spacer(Modifier.height(10.dp))
+
+                    // Własne dźwięki punktów
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(onClick = onOpenCustomAudio),
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color(0xFF2C2C2E)
+                    ) {
+                        Row(
+                            Modifier.padding(14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.MusicNote,
+                                contentDescription = null,
+                                tint = DartGreen,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    "Własne dźwięki punktów",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.White
+                                )
+                                Text(
+                                    "Przypisz własne pliki audio (mp3, wav) pod wybrane wyniki",
+                                    fontSize = 11.sp,
+                                    color = DartSubtle
+                                )
+                            }
                             Text("›", fontSize = 20.sp, color = DartGreen)
                         }
                     }
@@ -1420,3 +1466,419 @@ fun CheckoutScreen(onBack: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun CustomAudioScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var soundsMap by remember { mutableStateOf(CustomAudioManager.loadCustomSounds(context)) }
+    var showAddDialog by remember { mutableStateOf(false) }
+    var scoreInput by remember { mutableStateOf("") }
+    var pendingScoreForPicker by remember { mutableStateOf<Int?>(null) }
+    var currentlyPlayingScore by remember { mutableStateOf<Int?>(null) }
+
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        val score = pendingScoreForPicker
+        if (uri != null && score != null) {
+            val entry = CustomAudioManager.importSoundFromUri(context, uri, score)
+            if (entry != null) {
+                soundsMap = CustomAudioManager.loadCustomSounds(context)
+                Toast.makeText(context, "Dźwięk przypisany do $score!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Błąd importu pliku audio", Toast.LENGTH_LONG).show()
+            }
+        }
+        pendingScoreForPicker = null
+    }
+
+    val exportZipLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/zip")
+    ) { uri ->
+        if (uri != null) {
+            try {
+                val tempZip = File(context.cacheDir, "dart_sounds_export.zip")
+                if (CustomAudioManager.exportToZip(context, tempZip)) {
+                    context.contentResolver.openOutputStream(uri)?.use { os ->
+                        tempZip.inputStream().use { it.copyTo(os) }
+                    }
+                    tempZip.delete()
+                    Toast.makeText(context, "Paczka dźwięków wyeksportowana pomyślnie!", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, "Brak dźwięków do wyeksportowania", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Błąd eksportu: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    val importZipLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            try {
+                val tempZip = File(context.cacheDir, "dart_sounds_import.zip")
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    FileOutputStream(tempZip).use { output ->
+                        inputStream.copyTo(output)
+                    }
+                }
+                if (CustomAudioManager.importFromZip(context, tempZip)) {
+                    soundsMap = CustomAudioManager.loadCustomSounds(context)
+                    Toast.makeText(context, "Paczka dźwięków zaimportowana pomyślnie!", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, "Błąd importu: nieprawidłowa paczka ZIP", Toast.LENGTH_LONG).show()
+                }
+                tempZip.delete()
+            } catch (e: Exception) {
+                Toast.makeText(context, "Błąd importu: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            CustomAudioManager.stopPlaying()
+        }
+    }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(DartDarkBg)
+    ) {
+        AppTopBar("Własne dźwięki punktów", onBack)
+
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            // Nagłówek i przyciski eksportu / importu ZIP
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                color = DartCardBg
+            ) {
+                Column(Modifier.padding(14.dp)) {
+                    Text(
+                        "Kopia zapasowa paczki dźwięków",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Eksportuj lub importuj całą paczkę (konfiguracja + pliki audio) w jednym pliku .zip",
+                        fontSize = 12.sp,
+                        color = DartSubtle
+                    )
+                    Spacer(Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                if (soundsMap.isEmpty()) {
+                                    Toast.makeText(context, "Dodaj najpierw dźwięki, aby wyeksportować paczkę", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    exportZipLauncher.launch("dart_sounds_${SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())}.zip")
+                                }
+                            },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2C2C2E)),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Icon(Icons.Default.Download, contentDescription = null, tint = DartGreen, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(6.dp))
+                            Text("Eksportuj", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                        }
+
+                        Button(
+                            onClick = {
+                                importZipLauncher.launch(arrayOf("application/zip", "application/x-zip-compressed", "application/octet-stream"))
+                            },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2C2C2E)),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Icon(Icons.Default.Upload, contentDescription = null, tint = DartGreen, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(6.dp))
+                            Text("Importuj", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                        }
+
+                        IconButton(
+                            onClick = {
+                                if (soundsMap.isEmpty()) {
+                                    Toast.makeText(context, "Brak dźwięków do udostępnienia", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    try {
+                                        val exportsDir = File(context.cacheDir, "exports").apply { mkdirs() }
+                                        val shareFile = File(exportsDir, "dart_sounds_pack.zip")
+                                        if (CustomAudioManager.exportToZip(context, shareFile)) {
+                                            val shareUri = androidx.core.content.FileProvider.getUriForFile(
+                                                context,
+                                                "${context.packageName}.fileprovider",
+                                                shareFile
+                                            )
+                                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                                type = "application/zip"
+                                                putExtra(Intent.EXTRA_STREAM, shareUri)
+                                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            }
+                                            context.startActivity(Intent.createChooser(shareIntent, "Udostępnij paczkę dźwięków"))
+                                        }
+                                    } catch (e: Exception) {
+                                        Toast.makeText(context, "Błąd udostępniania: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(Color(0xFF2C2C2E), RoundedCornerShape(8.dp))
+                                .border(1.dp, Color(0xFF444444), RoundedCornerShape(8.dp))
+                        ) {
+                            Icon(Icons.Default.Share, contentDescription = "Udostępnij", tint = DartGreen, modifier = Modifier.size(18.dp))
+                        }
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            // Przycisk dodawania nowego dźwięku
+            Button(
+                onClick = {
+                    scoreInput = ""
+                    showAddDialog = true
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = DartGreen),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = null, tint = Color.Black, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(6.dp))
+                Text("Przypisz dźwięk do punktów", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            // Lista przypisanych dźwięków
+            Text(
+                "Przypisane dźwięki (${soundsMap.size}):",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            if (soundsMap.isEmpty()) {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    color = DartCardBg
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Default.MusicNote,
+                            contentDescription = null,
+                            tint = DartSubtle,
+                            modifier = Modifier.size(36.dp)
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "Brak własnych dźwięków",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "Kliknij powyższy przycisk, aby dodać dźwięk np. dla 180, 140, 100 lub 0 (pudło).",
+                            fontSize = 12.sp,
+                            color = DartSubtle,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(bottom = 24.dp)
+                ) {
+                    val sortedEntries = soundsMap.values.sortedByDescending { it.score }
+                    items(sortedEntries, key = { it.score }) { entry ->
+                        val isPlaying = currentlyPlayingScore == entry.score
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = DartCardBg
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(42.dp)
+                                        .background(
+                                            if (entry.score == 180) DartRed else if (entry.score == 0) Color(0xFF555555) else DartGreen,
+                                            RoundedCornerShape(6.dp)
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = entry.score.toString(),
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        color = if (entry.score == 180 || entry.score == 0) Color.White else Color.Black
+                                    )
+                                }
+
+                                Spacer(Modifier.width(12.dp))
+
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = if (entry.score == 0) "0 pkt (Pudło / Bust)" else "${entry.score} pkt",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        text = entry.originalName,
+                                        fontSize = 11.sp,
+                                        color = DartSubtle,
+                                        maxLines = 1
+                                    )
+                                }
+
+                                // Odsłuchaj
+                                IconButton(
+                                    onClick = {
+                                        if (isPlaying) {
+                                            CustomAudioManager.stopPlaying()
+                                            currentlyPlayingScore = null
+                                        } else {
+                                            currentlyPlayingScore = entry.score
+                                            val started = CustomAudioManager.playSound(context, entry.fileName) {
+                                                currentlyPlayingScore = null
+                                            }
+                                            if (!started) currentlyPlayingScore = null
+                                        }
+                                    },
+                                    modifier = Modifier.size(36.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = if (isPlaying) Icons.Default.Stop else Icons.Default.VolumeUp,
+                                        contentDescription = "Odsłuchaj",
+                                        tint = if (isPlaying) DartRed else DartGreen,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+
+                                // Zmień plik
+                                IconButton(
+                                    onClick = {
+                                        pendingScoreForPicker = entry.score
+                                        filePickerLauncher.launch(arrayOf("audio/*"))
+                                    },
+                                    modifier = Modifier.size(36.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        contentDescription = "Zmień",
+                                        tint = DartSubtle,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+
+                                // Usuń
+                                IconButton(
+                                    onClick = {
+                                        CustomAudioManager.removeSound(context, entry.score)
+                                        soundsMap = CustomAudioManager.loadCustomSounds(context)
+                                        Toast.makeText(context, "Usunięto dźwięk dla ${entry.score}", Toast.LENGTH_SHORT).show()
+                                    },
+                                    modifier = Modifier.size(36.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Usuń",
+                                        tint = DartRed,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (showAddDialog) {
+        AlertDialog(
+            onDismissRequest = { showAddDialog = false },
+            title = { Text("Dodaj własny dźwięk", color = Color.White) },
+            text = {
+                Column {
+                    Text(
+                        "Wpisz liczbę punktów w kolejce (np. 180, 140, 100, 26 lub 0 dla pudła):",
+                        fontSize = 13.sp,
+                        color = DartSubtle
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedTextField(
+                        value = scoreInput,
+                        onValueChange = { scoreInput = it.filter { c -> c.isDigit() }.take(3) },
+                        label = { Text("Liczba punktów (0–180)") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = DartGreen,
+                            unfocusedBorderColor = Color(0xFF444444),
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        )
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val score = scoreInput.toIntOrNull()
+                        if (score != null && score in 0..180) {
+                            showAddDialog = false
+                            pendingScoreForPicker = score
+                            filePickerLauncher.launch(arrayOf("audio/*"))
+                        } else {
+                            Toast.makeText(context, "Podaj liczbę od 0 do 180", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = DartGreen)
+                ) {
+                    Text("Wybierz plik audio", color = Color.Black, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAddDialog = false }) {
+                    Text("Anuluj", color = DartSubtle)
+                }
+            },
+            containerColor = DartCardBg
+        )
+    }
+}
+
