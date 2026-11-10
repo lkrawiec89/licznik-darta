@@ -145,7 +145,9 @@ object UpdateManager {
         }
         if (apkDownloadUrl.isEmpty()) return null
 
-        val buildMatch = Regex("""(?i)(?:build|code|versionCode)\s*[:=]\s*(\d+)""").find(body)
+        val releaseName = json.optString("name", "")
+        val combinedText = "$releaseName\n$body"
+        val buildMatch = Regex("""(?i)(?:build|code|versionCode)\s*[:=\s]\s*(\d+)""").find(combinedText)
         val parsedCode = buildMatch?.groupValues?.get(1)?.toIntOrNull()
             ?: parseVersionCodeFromTag(tagName)
 
