@@ -1,0 +1,10 @@
+Dart Scoreboard is an open-source, privacy-friendly dart scorer designed for home games and tournaments.
+
+Features:
+• Multiple game modes: X01 (301, 501, 701, Double Out, Master Out), Cricket, and Round the Clock
+• Practice against an AI bot with adjustable difficulty levels
+• Smart checkout suggestions with preferred finishing paths
+• Voice announcements and sound effects
+• In-depth player and match statistics (3-dart averages, first 9, checkout %, detailed hit charts)
+• 100% offline, privacy-first: no ads, no trackers
+• Database backup and restore (JSON format)

@@ -1,0 +1,3 @@
+Integrated in-app OTA updater for APK releases.
+Optimized checkout calculation paths (favouring D8, D16, D20).
+Added back button dialog handler during ongoing games.

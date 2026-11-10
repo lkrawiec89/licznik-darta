@@ -1,0 +1,3 @@
+Wdrożono wbudowany moduł aktualizacji OTA (Self-updater) z obsługą pobierania nowych wydań bezpośrednio z GitHub Releases.
+Przygotowano strukturę metadanych Fastlane pod katalog F-Droid / IzzyOnDroid.
+Dodano plik licencji MIT Open Source.

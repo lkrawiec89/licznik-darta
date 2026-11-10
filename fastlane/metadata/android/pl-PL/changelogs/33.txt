@@ -1,0 +1,3 @@
+Wdrożono wbudowany mechanizm aktualizacji OTA (sprawdzanie nowej wersji, pobieranie APK i instalacja).
+Zoptymalizowano tabelę checkoutów (ścieżki kończeń D8/D16/D20).
+Dodano obsługę przycisku wstecz z oknem potwierdzenia.

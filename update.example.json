@@ -1,0 +1,7 @@
+{
+  "versionCode": 34,
+  "versionName": "1.1.23",
+  "apkUrl": "https://github.com/TWOJA_NAZWA/licznik-darta/releases/download/v1.1.23/LicznikDarta-1.1.23.apk",
+  "releaseNotes": "• Wdrożono samoczynne aktualizacje OTA\n• Zoptymalizowano działanie aplikacji\n• Poprawki stabilności",
+  "mandatory": false
+}

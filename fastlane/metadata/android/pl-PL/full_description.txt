@@ -1,0 +1,10 @@
+Licznik Darta to nowoczesna, w pełni darmowa aplikacja open-source do liczenia punktów podczas gry w darta.
+
+Główne funkcje:
+• Tryby gry: X01 (301, 501, 701, Double Out, Master Out), Cricket oraz Round the Clock (Dookoła tarczy)
+• Gra przeciwko wirtualnemu botowi na różnych poziomach trudności
+• Sugestie checkoutów (kończeń) zoptymalizowane pod kątem podwójnych finiszów
+• Komunikaty głosowe (lektora) oraz efekty dźwiękowe
+• Szczegółowe statystyki meczów i graczy (średnie 3 lotek, first 9, checkout %, historia rzutów)
+• Działa w 100% offline, bez reklam i bez śledzenia użytkowników
+• Obsługa importu i eksportu bazy danych do pliku JSON

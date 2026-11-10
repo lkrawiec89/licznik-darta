@@ -1,0 +1,3 @@
+Added built-in OTA self-updater with direct download and install from GitHub Releases.
+Configured Fastlane metadata structure for F-Droid and IzzyOnDroid.
+Added MIT Open Source license.
