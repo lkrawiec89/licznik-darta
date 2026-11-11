@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Licznik Darta – Nowoczesny licznik punktów do darta na Androida</title>
+  <meta name="description" content="Koniec z liczeniem na kartce przy piwie. Darmowy, bezreklamowy licznik punktów do darta (X01, Cricket) z sugestiami checkoutów i własnymi dźwiękami. Pobierz plik APK na telefon.">
+  <meta name="theme-color" content="#0d1117">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Licznik Darta – Darmowy licznik punktów na Androida">
+  <meta property="og:description" content="Graj w 501, 301, Cricket ze znajomymi lub botem. Własne okrzyki dźwiękowe, zero reklam, 100% offline.">
+  <meta property="og:image" content="assets/icon.png">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOURNAMENT TICKER / TOPBAR -->
+  <header class="scoreboard-ticker">
+    <div class="ticker-content">
+      <span class="ticker-item"><span class="badge-dot green"></span> OPEN SOURCE (MIT)</span>
+      <span class="ticker-sep">/</span>
+      <span class="ticker-item">🎯 X01 (301, 501, 701)</span>
+      <span class="ticker-sep">/</span>
+      <span class="ticker-item">🏆 CRICKET & CUT-THROAT</span>
+      <span class="ticker-sep">/</span>
+      <span class="ticker-item">🔊 WŁASNE DŹWIĘKI MP3 & WAV</span>
+      <span class="ticker-sep">/</span>
+      <span class="ticker-item">🛡️ ZERO REKLAM & BEZ INTERNETU</span>
+    </div>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <img src="assets/icon.png" alt="Logo Licznik Darta" class="brand-logo">
+        <span class="brand-title">LICZNIK DARTA</span>
+      </a>
+      <div class="nav-links">
+        <a href="#funkcje" class="nav-link">Funkcje</a>
+        <a href="#instalacja" class="nav-link">Jak zainstalować</a>
+        <a href="https://github.com/lkrawiec89/licznik-darta" target="_blank" rel="noopener" class="nav-link github-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <main class="hero-section">
+    <div class="hero-container">
+      
+      <!-- HERO LEFT -->
+      <div class="hero-content">
+        <div class="chalk-tag">
+          <span class="live-dot"></span> WERSJA STABILNA <strong id="hero-version">v1.1.24</strong>
+        </div>
+
+        <h1 class="hero-headline">
+          KONIEC Z LICZENIEM<br>
+          <span class="text-green">NA KARTCE</span> PRZY TARCZY.
+        </h1>
+
+        <p class="hero-description">
+          Zaprojektowany do wspólnej gry ze znajomymi w pubie lub w domu. Błyskawiczne wprowadzanie punktów, gotowe podpowiedzi checkoutów na podwójne, bot treningowy i Twoje własne okrzyki dźwiękowe.
+        </p>
+
+        <!-- DOWNLOAD ACTION AREA -->
+        <div class="download-action-box">
+          <a id="primary-download-btn" href="https://github.com/lkrawiec89/licznik-darta/releases/latest/download/LicznikDarta-1.1.24.apk" class="btn-download">
+            <div class="btn-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
+            <div class="btn-text">
+              <span class="btn-main">POBIERZ NA TELEFON</span>
+              <span class="btn-sub">Plik APK (Android 7.0+) • Bezpośrednio</span>
+            </div>
+          </a>
+
+          <button id="copy-link-btn" class="btn-share" title="Kopiuj link do pobrania">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            <span id="copy-btn-text">Kopiuj link dla kumpla</span>
+          </button>
+        </div>
+
+        <!-- SPECS CHIPS -->
+        <div class="specs-ribbon">
+          <div class="spec-pill">
+            <span class="spec-label">ROZMIAR</span>
+            <span class="spec-val">tylko 2.7 MB</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">REKLAMY</span>
+            <span class="spec-val text-green">0% (Nigdy)</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">INTERNET</span>
+            <span class="spec-val">Zbędny (100% Offline)</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">AKTUALIZACJE</span>
+            <span class="spec-val">Wbudowane OTA</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HERO RIGHT / DEVICE SHOWCASE -->
+      <div class="hero-visual">
+        <div class="device-wrapper">
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <img id="active-screen-img" src="assets/screen_x01.jpg" alt="Ekran gry w darta" class="screen-preview">
+            </div>
+          </div>
+
+          <!-- SCREEN SWITCHER BUTTONS -->
+          <div class="screen-selector">
+            <button class="screen-tab active" data-img="assets/screen_x01.jpg">
+              <span class="tab-title">X01 / 501</span>
+              <span class="tab-desc">Licznik & Finisze</span>
+            </button>
+            <button class="screen-tab" data-img="assets/screen_cricket.jpg">
+              <span class="tab-title">Cricket</span>
+              <span class="tab-desc">Tabela & Punkty</span>
+            </button>
+            <button class="screen-tab" data-img="assets/screen_main.jpg">
+              <span class="tab-title">Setup</span>
+              <span class="tab-desc">Gracze & Bot</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- DESKTOP QR CODE CARD -->
+        <div class="qr-desktop-card">
+          <div class="qr-box">
+            <img src="assets/qr_download.png" alt="Kod QR do pobrania" class="qr-image">
+          </div>
+          <div class="qr-text">
+            <strong>Oglądasz na komputerze?</strong>
+            <span>Skieruj aparat telefonu na kod QR, aby od razu pobrać aplikację na smartfona.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FEATURES SECTION: SCORECARD BOARD -->
+  <section id="funkcje" class="features-section">
+    <div class="section-container">
+      
+      <div class="section-header">
+        <span class="section-tag">TABLICA FUNKCJI</span>
+        <h2 class="section-title">WSZYSTKO CZEGO POTRZEBUJESZ PRZY TARCZY</h2>
+        <p class="section-subtitle">Bez zbędnych wodotrysków, bez rejestracji kont, bez zbierania danych. Prosto, szybko i czytelnie z odległości 2.37 metra.</p>
+      </div>
+
+      <div class="feature-matrix">
+        
+        <!-- CARD 1 -->
+        <article class="board-card highlight">
+          <div class="card-corner">180</div>
+          <div class="card-icon">🎯</div>
+          <h3>Inteligentne Checkouty (2–170)</h3>
+          <p>Aplikacja automatycznie przelicza i podpowiada optymalne ścieżki zakończenia legów, preferując ulubione podwójne: <strong>D16, D20 czy D8</strong>. Koniec z zastanawianiem się, co rzucić po 82 czy 121.</p>
+          <div class="card-meta">
+            <span class="tag-badge">Podwójne finisze</span>
+            <span class="tag-badge">Master Out</span>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="board-card highlight">
+          <div class="card-corner">AUDIO</div>
+          <div class="card-icon">🔊</div>
+          <h3>Własne Dźwięki i Paczki ZIP</h3>
+          <p>Możesz podpiąć dowolny plik MP3 lub WAV pod dowolny wynik (np. Twój własny okrzyk na 180 albo śmiech na pudło). Całą paczkę dźwięków wyeksportujesz jednym klikiem do <strong>pliku .zip</strong> i wyślesz znajomym!</p>
+          <div class="card-meta">
+            <span class="tag-badge">MP3 / WAV / OGG</span>
+            <span class="tag-badge">Eksport ZIP</span>
+          </div>
+        </article>
+
+        <!-- CARD 3 -->
+        <article class="board-card">
+          <div class="card-corner">BOT</div>
+          <div class="card-icon">🤖</div>
+          <h3>Wirtualny Przeciwnik</h3>
+          <p>Nie masz z kim rzucać? Zmierz się z wirtualnym botem na różnych poziomach trudności (od początkującego po bezlitosnego mistrza darta). Idealne do codziennego treningu.</p>
+          <div class="card-meta">
+            <span class="tag-badge">Różne poziomy</span>
+            <span class="tag-badge">Tryb solo</span>
+          </div>
+        </article>
+
+        <!-- CARD 4 -->
+        <article class="board-card">
+          <div class="card-corner">CRK</div>
+          <div class="card-icon">📊</div>
+          <h3>Cricket & Cut-Throat</h3>
+          <p>Pełne wsparcie dla kultowego trybu Cricket (sektory 15–20 + Bull), także w bezwzględnym wariancie Cut-Throat z naliczaniem punktów przeciwnikom.</p>
+          <div class="card-meta">
+            <span class="tag-badge">Szybkie zamykanie</span>
+            <span class="tag-badge">Cut-Throat</span>
+          </div>
+        </article>
+
+        <!-- CARD 5 -->
+        <article class="board-card">
+          <div class="card-corner">STAT</div>
+          <div class="card-icon">📈</div>
+          <h3>Statystyki i Historia Gier</h3>
+          <p>Średnia 3 lotek, First 9, procent trafionych checkoutów, historia meczy z opcją pauzowania i wznawiania gry w dowolnym momencie. Pełny eksport bazy do pliku JSON.</p>
+          <div class="card-meta">
+            <span class="tag-badge">First 9</span>
+            <span class="tag-badge">Kopia JSON</span>
+          </div>
+        </article>
+
+        <!-- CARD 6 -->
+        <article class="board-card">
+          <div class="card-corner">OTA</div>
+          <div class="card-icon">⚡</div>
+          <h3>Samoczynne Aktualizacje (OTA)</h3>
+          <p>Aplikacja posiada wbudowany moduł aktualizacji. Gdy wyjdzie nowa wersja, sprawdzasz ją w Ustawieniach i aktualizujesz jednym kliknięciem – bez ponownego szukania plików.</p>
+          <div class="card-meta">
+            <span class="tag-badge">GitHub Releases</span>
+            <span class="tag-badge">Self-Updater</span>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INSTALLATION GUIDE / CHEAT SHEET -->
+  <section id="instalacja" class="install-section">
+    <div class="section-container">
+      
+      <div class="install-sheet">
+        <div class="sheet-header">
+          <div class="sheet-title-group">
+            <span class="sheet-badge">INSTRUKCJA DLA ZNAJOMYCH</span>
+            <h2 class="sheet-title">JAK ZAINSTALOWAĆ W 30 SEKUND?</h2>
+          </div>
+          <div class="sheet-note">Android nie pobiera aplikacji ze sklepu Google Play, więc instalujesz ją bezpośrednio z pliku APK.</div>
+        </div>
+
+        <div class="steps-grid">
+          
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <h4>Pobierz plik APK</h4>
+            <p>Kliknij zielony przycisk <strong>„Pobierz na telefon”</strong> na samej górze tej strony. Przeglądarka (Chrome, Samsung itp.) zapisze plik w pamięci telefonu.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <h4>Zezwól na instalację</h4>
+            <p>Gdy telefon zapyta: <em>„Czy chcesz zainstalować aplikację z nieznanego źródła?”</em>, wejdź w <strong>Ustawienia</strong> i włącz suwak przy Twojej przeglądarce. To standardowy wymóg Androida dla plików spoza Google Play.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <h4>Kliknij „Zainstaluj” i graj</h4>
+            <p>Potwierdź instalację. Aplikacja pojawi się w menu telefonu. <strong>Co ważne:</strong> kolejne aktualizacje pobierasz już bezpośrednio w samej aplikacji!</p>
+          </div>
+
+        </div>
+
+        <div class="sheet-cta">
+          <a href="https://github.com/lkrawiec89/licznik-darta/releases/latest/download/LicznikDarta-1.1.24.apk" class="btn-download compact">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>POBIERZ NAJNOWSZY PLIK APK</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="footer-logo">🎯 LICZNIK DARTA</div>
+        <p class="footer-desc">Niezależny, w 100% darmowy licznik punktów do darta tworzony z pasji do gry.</p>
+        <div class="footer-license">Licencja Open Source: <strong>MIT License</strong></div>
+      </div>
+      
+      <div class="footer-right">
+        <a href="https://github.com/lkrawiec89/licznik-darta" target="_blank" rel="noopener" class="footer-link">Repozytorium GitHub</a>
+        <a href="https://github.com/lkrawiec89/licznik-darta/releases" target="_blank" rel="noopener" class="footer-link">Wszystkie wydania</a>
+        <a href="https://github.com/lkrawiec89/licznik-darta/issues" target="_blank" rel="noopener" class="footer-link">Zgłoś pomysł / błąd</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
