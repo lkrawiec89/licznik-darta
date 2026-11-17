@@ -1,0 +1,1 @@
+Dodano przełączniki umożliwiające wyłączenie domyślnych dźwięków dla 180, 140, 100, 0 (śmiech) oraz przedupienia (bust).

@@ -1,0 +1,1 @@
+Added toggles to disable default built-in sounds for 180, 140, 100, 0 (laugh) and bust.

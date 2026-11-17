@@ -445,28 +445,43 @@ class GameAudio(context: Context? = null) {
         playRawVoice(sound180Id, R.raw.voice_180)
     }
 
-    fun playLaugh() {
+    fun playLaugh(settings: Settings? = null) {
         val ctx = appContext
         if (ctx != null && CustomAudioManager.playSoundForScore(ctx, 0)) {
+            return
+        }
+        if (settings != null && !settings.sound0) {
             return
         }
         playRawVoice(soundLaughId, R.raw.laugh)
     }
 
-    fun playAnnounceIfSpecial(score: Int): Boolean {
+    fun playAnnounceIfSpecial(score: Int, settings: Settings? = null): Boolean {
         val ctx = appContext
         if (ctx != null && CustomAudioManager.playSoundForScore(ctx, score)) {
             return true
         }
         return when (score) {
-            180 -> { play180(); true }
-            140 -> { play140(); true }
-            100 -> { play100(); true }
+            180 -> {
+                if (settings == null || settings.sound180) play180()
+                true
+            }
+            140 -> {
+                if (settings == null || settings.sound140) play140()
+                true
+            }
+            100 -> {
+                if (settings == null || settings.sound100) play100()
+                true
+            }
             else -> false
         }
     }
 
-    fun playBrym() {
+    fun playBrym(settings: Settings? = null) {
+        if (settings != null && !settings.soundBust) {
+            return
+        }
         val pool = soundPool
         if (pool != null && soundBrymId != 0) {
             pool.play(soundBrymId, 1.0f, 1.0f, 1, 0, 1.0f)

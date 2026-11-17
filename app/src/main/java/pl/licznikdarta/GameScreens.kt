@@ -77,23 +77,23 @@ private fun BotTurnLoop(
                     val isWon = !wasFinished && engine.finishedOrder.isNotEmpty() && !hadWinner
                     if (state.settings.sounds) {
                         if (engine.lastThrowBust) {
-                            audio.playBrym()
+                            audio.playBrym(state.settings)
                         } else if (isWon) {
                             val winnerIdx = engine.finishedOrder.first()
                             if (engine.isBot(winnerIdx) && engine.players.indices.any { !engine.isBot(it) }) {
-                                audio.playBrym()
+                                audio.playBrym(state.settings)
                             } else {
                                 audio.playVictory()
                             }
                         } else if (engine.lastTurnThreeZeros) {
-                            audio.playLaugh()
+                            audio.playLaugh(state.settings)
                         } else {
                             audio.throwSound(t.mult)
                         }
                     }
                     val turnScore = engine.spoken.toIntOrNull() ?: -1
                     val playedVoice = if (!isWon && (state.settings.sounds || state.settings.voice)) {
-                        if (engine.lastTurnThreeZeros) true else audio.playAnnounceIfSpecial(turnScore)
+                        if (engine.lastTurnThreeZeros) true else audio.playAnnounceIfSpecial(turnScore, state.settings)
                     } else false
 
                     if (!playedVoice && !isWon && state.settings.voice && engine.spoken.isNotEmpty()) {
@@ -115,12 +115,12 @@ private fun BotTurnLoop(
                         if (!wasFinished && engine.finishedOrder.isNotEmpty() && !hadWinner) {
                             val winnerIdx = engine.finishedOrder.first()
                             if (engine.isBot(winnerIdx) && engine.players.indices.any { !engine.isBot(it) }) {
-                                audio.playBrym()
+                                audio.playBrym(state.settings)
                             } else {
                                 audio.playVictory()
                             }
                         } else if (engine.lastTurnThreeZeros) {
-                            audio.playLaugh()
+                            audio.playLaugh(state.settings)
                         } else {
                             audio.throwSound(mult)
                         }
@@ -144,12 +144,12 @@ private fun BotTurnLoop(
                     if (state.settings.sounds) {
                         if (!wasFinished && engine.finished) {
                             if (engine.isBot(engine.winnerIdx) && engine.players.indices.any { !engine.isBot(it) }) {
-                                audio.playBrym()
+                                audio.playBrym(state.settings)
                             } else {
                                 audio.playVictory()
                             }
                         } else if (engine.lastTurnThreeZeros) {
-                            audio.playLaugh()
+                            audio.playLaugh(state.settings)
                         } else {
                             audio.throwSound(mult)
                         }
@@ -307,18 +307,18 @@ fun X01Screen(
         val isWon = !wasFinished && engine.finishedOrder.isNotEmpty() && !hadWinner
         if (soundEnabled) {
             if (engine.lastThrowBust) {
-                audio.playBrym()
+                audio.playBrym(state.settings)
             } else if (isWon) {
                 audio.playVictory()
             } else if (engine.lastTurnThreeZeros) {
-                audio.playLaugh()
+                audio.playLaugh(state.settings)
             } else {
                 audio.click(state.settings.keySound)
             }
         }
         val turnScore = engine.spoken.toIntOrNull() ?: -1
         val playedVoice = if (!isWon && (soundEnabled || state.settings.voice)) {
-            if (engine.lastTurnThreeZeros) true else audio.playAnnounceIfSpecial(turnScore)
+            if (engine.lastTurnThreeZeros) true else audio.playAnnounceIfSpecial(turnScore, state.settings)
         } else false
 
         if (!playedVoice && !isWon && state.settings.voice && engine.spoken.isNotEmpty()) {
@@ -1310,7 +1310,7 @@ fun CricketScreen(
                             engine.submitDart(0, 0)
                             if (soundEnabled) {
                                 if (engine.lastTurnThreeZeros) {
-                                    audio.playLaugh()
+                                    audio.playLaugh(state.settings)
                                 } else {
                                     audio.throwSound(0)
                                 }
@@ -1438,7 +1438,7 @@ fun AroundScreen(
             if (!wasFinished && engine.finished) {
                 audio.playVictory()
             } else if (engine.lastTurnThreeZeros) {
-                audio.playLaugh()
+                audio.playLaugh(state.settings)
             } else {
                 audio.throwSound(m)
             }

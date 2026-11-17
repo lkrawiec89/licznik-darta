@@ -114,6 +114,11 @@ data class LastGameSetup(
 data class Settings(
     val sounds: Boolean = true,
     val voice: Boolean = false,
+    val sound180: Boolean = true,
+    val sound140: Boolean = true,
+    val sound100: Boolean = true,
+    val sound0: Boolean = true,
+    val soundBust: Boolean = true,
     val botLevel: BotLevel = BotLevel.NORMAL,
     val speechRate: Float = 1.0f,
     val pitch: Float = 1.0f,

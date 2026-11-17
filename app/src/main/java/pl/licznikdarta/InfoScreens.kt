@@ -840,6 +840,11 @@ fun SettingsScreen(
         }
     }
     var sounds by remember { mutableStateOf(state.settings.sounds) }
+    var sound180 by remember { mutableStateOf(state.settings.sound180) }
+    var sound140 by remember { mutableStateOf(state.settings.sound140) }
+    var sound100 by remember { mutableStateOf(state.settings.sound100) }
+    var sound0 by remember { mutableStateOf(state.settings.sound0) }
+    var soundBust by remember { mutableStateOf(state.settings.soundBust) }
     var voice by remember { mutableStateOf(state.settings.voice) }
     var botLevel by remember { mutableStateOf(state.settings.botLevel) }
     var rate by remember { mutableStateOf(state.settings.speechRate) }
@@ -867,7 +872,7 @@ fun SettingsScreen(
         ) {
             Surface(shape = RoundedCornerShape(10.dp), color = DartCardBg) {
                 Column(Modifier.padding(16.dp)) {
-                    // Dźwięki
+                    // Dźwięki ogólne
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text("Dźwięki", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
@@ -881,6 +886,98 @@ fun SettingsScreen(
                             },
                             colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = DartGreen)
                         )
+                    }
+
+                    if (sounds) {
+                        Spacer(Modifier.height(10.dp))
+                        Text("Domyślne okrzyki i efekty audio:", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DartSubtle)
+                        Spacer(Modifier.height(6.dp))
+
+                        // 180
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("Okrzyk 180", fontSize = 14.sp, color = Color.White, modifier = Modifier.weight(1f))
+                            Switch(
+                                checked = sound180,
+                                onCheckedChange = {
+                                    sound180 = it
+                                    state.saveSettings(state.settings.copy(sound180 = it))
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = DartGreen)
+                            )
+                        }
+
+                        // 140
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("Okrzyk 140", fontSize = 14.sp, color = Color.White, modifier = Modifier.weight(1f))
+                            Switch(
+                                checked = sound140,
+                                onCheckedChange = {
+                                    sound140 = it
+                                    state.saveSettings(state.settings.copy(sound140 = it))
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = DartGreen)
+                            )
+                        }
+
+                        // 100
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("Okrzyk 100", fontSize = 14.sp, color = Color.White, modifier = Modifier.weight(1f))
+                            Switch(
+                                checked = sound100,
+                                onCheckedChange = {
+                                    sound100 = it
+                                    state.saveSettings(state.settings.copy(sound100 = it))
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = DartGreen)
+                            )
+                        }
+
+                        // 0 (Pudło / 3 zera)
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Śmiech przy 0 pkt", fontSize = 14.sp, color = Color.White)
+                                Text("Odtwarzany przy turze z 3 zerami", fontSize = 11.sp, color = DartSubtle)
+                            }
+                            Switch(
+                                checked = sound0,
+                                onCheckedChange = {
+                                    sound0 = it
+                                    state.saveSettings(state.settings.copy(sound0 = it))
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = DartGreen)
+                            )
+                        }
+
+                        // Przedupienie / Bust
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Dźwięk przedupienia (Bust)", fontSize = 14.sp, color = Color.White)
+                                Text("Sygnał przy spalonym rzucie", fontSize = 11.sp, color = DartSubtle)
+                            }
+                            Switch(
+                                checked = soundBust,
+                                onCheckedChange = {
+                                    soundBust = it
+                                    state.saveSettings(state.settings.copy(soundBust = it))
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = DartGreen)
+                            )
+                        }
                     }
 
                     Spacer(Modifier.height(14.dp))

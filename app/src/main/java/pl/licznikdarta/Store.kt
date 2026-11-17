@@ -108,6 +108,11 @@ object Store {
         Settings(
             sounds = o.optBoolean("sounds", true),
             voice = o.optBoolean("voice", false),
+            sound180 = o.optBoolean("sound180", true),
+            sound140 = o.optBoolean("sound140", true),
+            sound100 = o.optBoolean("sound100", true),
+            sound0 = o.optBoolean("sound0", true),
+            soundBust = o.optBoolean("soundBust", true),
             botLevel = try { BotLevel.valueOf(o.optString("botLevel", BotLevel.NORMAL.name)) } catch (_: Exception) { BotLevel.NORMAL },
             speechRate = o.optDouble("speechRate", 1.0).toFloat(),
             pitch = o.optDouble("pitch", 1.0).toFloat(),
@@ -122,6 +127,11 @@ object Store {
         file(ctx, "settings.json").writeText(JSONObject()
             .put("sounds", s.sounds)
             .put("voice", s.voice)
+            .put("sound180", s.sound180)
+            .put("sound140", s.sound140)
+            .put("sound100", s.sound100)
+            .put("sound0", s.sound0)
+            .put("soundBust", s.soundBust)
             .put("botLevel", s.botLevel.name)
             .put("speechRate", s.speechRate.toDouble())
             .put("pitch", s.pitch.toDouble())
