@@ -92,11 +92,12 @@ private fun BotTurnLoop(
                         }
                     }
                     val turnScore = engine.spoken.toIntOrNull() ?: -1
+                    val isBustWithSound = engine.lastThrowBust && state.settings.sounds && state.settings.soundBust
                     val playedVoice = if (!isWon && (state.settings.sounds || state.settings.voice)) {
                         if (engine.lastTurnThreeZeros) true else audio.playAnnounceIfSpecial(turnScore, state.settings)
                     } else false
 
-                    if (!playedVoice && !isWon && state.settings.voice && engine.spoken.isNotEmpty()) {
+                    if (!playedVoice && !isBustWithSound && !isWon && state.settings.voice && engine.spoken.isNotEmpty()) {
                         tts.speak(engine.spoken)
                     }
                 }
@@ -317,11 +318,12 @@ fun X01Screen(
             }
         }
         val turnScore = engine.spoken.toIntOrNull() ?: -1
+        val isBustWithSound = engine.lastThrowBust && soundEnabled && state.settings.soundBust
         val playedVoice = if (!isWon && (soundEnabled || state.settings.voice)) {
             if (engine.lastTurnThreeZeros) true else audio.playAnnounceIfSpecial(turnScore, state.settings)
         } else false
 
-        if (!playedVoice && !isWon && state.settings.voice && engine.spoken.isNotEmpty()) {
+        if (!playedVoice && !isBustWithSound && !isWon && state.settings.voice && engine.spoken.isNotEmpty()) {
             tts.speak(engine.spoken)
         }
         doubleOn = false

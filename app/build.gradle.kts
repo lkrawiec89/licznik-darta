@@ -12,8 +12,8 @@ android {
         applicationId = "pl.licznikdarta"
         minSdk = 24
         targetSdk = 35
-        versionCode = 36
-        versionName = "1.1.25"
+        versionCode = 37
+        versionName = "1.1.26"
     }
 
     signingConfigs {

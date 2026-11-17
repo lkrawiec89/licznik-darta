@@ -1,0 +1,1 @@
+Wyciszenie lektora (0 pkt) w tle, gdy aktywny jest dźwięk przedupienia (bust).

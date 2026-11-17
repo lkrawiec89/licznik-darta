@@ -1,0 +1,1 @@
+Silence TTS '0' announcement in background when bust sound effect is active.
